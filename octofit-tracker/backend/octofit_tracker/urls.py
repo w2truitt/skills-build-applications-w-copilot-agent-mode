@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+from rest_framework.urlpatterns import format_suffix_patterns
 from .views import UserViewSet, TeamViewSet, ActivityViewSet, LeaderboardViewSet, WorkoutViewSet, api_root
 
 router = DefaultRouter()
@@ -26,8 +27,12 @@ router.register(r'activities', ActivityViewSet)
 router.register(r'leaderboard', LeaderboardViewSet)
 router.register(r'workouts', WorkoutViewSet)
 
-urlpatterns = [
-    path('', api_root, name='api-root'),  # Root endpoint
-    path("admin/", admin.site.urls),  # Admin endpoint
-    path('api/', include(router.urls)),  # API endpoint
+# Custom patterns for API root with format suffix support
+api_root_patterns = [
+    path('', api_root, name='api-root'),
 ]
+
+urlpatterns = [
+    path("admin/", admin.site.urls),  # Admin endpoint
+    path('api/', include(router.urls)),  # API endpoint (router handles format suffixes automatically)
+] + format_suffix_patterns(api_root_patterns)  # Apply format suffix patterns only to custom endpoints

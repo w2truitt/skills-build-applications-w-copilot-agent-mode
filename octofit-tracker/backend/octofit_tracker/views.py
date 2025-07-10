@@ -10,26 +10,12 @@ def api_root(request, format=None):
     if request.method == 'POST':
         return Response({"message": "POST request received"}, status=status.HTTP_201_CREATED)
 
-    # Get the current host and scheme for dynamic URL generation
-    # Handle Codespace proxy URLs and forwarded headers
-    forwarded_host = request.META.get('HTTP_X_FORWARDED_HOST')
-    forwarded_proto = request.META.get('HTTP_X_FORWARDED_PROTO')
-    
-    if forwarded_host and 'app.github.dev' in forwarded_host:
-        base_url = f"https://{forwarded_host}/"
-    else:
-        host = request.get_host()
-        if 'app.github.dev' in host:
-            base_url = f"https://{host}/"
-        else:
-            base_url = f"{request.scheme}://{host}/"
-    
     return Response({
-        'users': base_url + 'api/users/?format=api',
-        'teams': base_url + 'api/teams/?format=api', 
-        'activities': base_url + 'api/activities/?format=api',
-        'leaderboard': base_url + 'api/leaderboard/?format=api',
-        'workouts': base_url + 'api/workouts/?format=api'
+        'users': reverse('user-list', request=request, format=format),
+        'teams': reverse('team-list', request=request, format=format),
+        'activities': reverse('activity-list', request=request, format=format),
+        'leaderboard': reverse('leaderboard-list', request=request, format=format),
+        'workouts': reverse('workout-list', request=request, format=format)
     })
 
 class UserViewSet(viewsets.ModelViewSet):
