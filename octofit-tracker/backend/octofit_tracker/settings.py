@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-(vunq*lq+t%4)z$a$w6woy_5vu7%z0x3*7yy1^+s*@o*o)y&p$
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*.app.github.dev']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '*.app.github.dev', 'ominous-memory-wq4j7vx49xqh5ww9-8000.app.github.dev']
 
 
 # Application definition
@@ -130,3 +130,7 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+# Handle Codespace proxy headers
+USE_X_FORWARDED_HOST = True
+USE_X_FORWARDED_PORT = True
